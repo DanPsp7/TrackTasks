@@ -17,8 +17,18 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-
-	repos := repository.NewRepository()
+	db, err := repository.NewPostgresDB(repository.Config{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		Username: os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASS"),
+		Database: os.Getenv("DB_NAME"),
+		SSlMode:  os.Getenv("DB_SSL_MODE"),
+	})
+	if err != nil {
+		log.Fatalf("Error connecting to database: %v", err)
+	}
+	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 	srv := new(TrackTasksNew.Server)
