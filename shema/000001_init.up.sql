@@ -9,7 +9,8 @@ CREATE TABLE people (
 
 CREATE TABLE tasks (
                        id serial PRIMARY KEY,
-                       description varchar(255) NOT NULL
+                       description varchar(255) NOT NULL,
+                       status varchar(255) NOT NULL
 );
 
 CREATE TABLE peopleTasks (
